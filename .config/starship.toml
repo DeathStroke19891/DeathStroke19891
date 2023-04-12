@@ -1,0 +1,56 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Use custom format
+format = """
+[┌───────────────────>](bold green)[$time](bold cyan) ($cmd_duration) $hostname
+[│](bold green)[$directory](bold magenta)$rust$c$haskell$python$package
+[└─](bold green)$character"""
+# format = """
+
+# $date$time
+# $directory\
+# \\$ """
+# Wait 10 milliseconds for starship to check files under the current directory.
+scan_timeout = 10
+
+# Disable the blank line at the start of the prompt
+add_newline = false
+
+[time]
+disabled = false
+format = '\[$time\]'
+time_format = "%T"
+utc_time_offset = "+5.5"
+
+[c]
+disabled = false
+detect_extensions = ["c","h"]
+format = "via [$symbol$name $version]($style)"
+
+[character]
+disabled = false
+success_symbol = "[.❯](bold green) "
+error_symbol = "[.❯](bold red) "
+
+[cmd_duration]
+min_time = 500
+format = "took [$duration](bold yellow)"
+show_notifications = true
+min_time_to_notify = 3000
+
+[directory]
+# While learning about the git customisation, look into the directory modules's git features
+truncation_symbol = "…/"
+format = "[$path]($style) [$read_only]($read_only_style) "
+
+[hostname]
+ssh_only = false
+format = "on [$hostname](bold blue) "
+disabled = false
+
+[rust]
+format = "via [⚙️ $version](red)"
+
+[python]
+format = 'via [(${version} )(\($virtualenv\) )]($style)'
