@@ -71,5 +71,47 @@
 (setq  x-meta-keysym 'super
        x-super-keysym 'meta)
 
-
 (add-hook 'find-file-hook 'recentf-save-list)
+
+(use-package! transpose-frame)
+
+(use-package! org-roam
+  :ensure t
+  :custom
+  (org-roam-directory "~/Documents/orgRoam")
+  (setq org-roam-completion-everywhere t)
+  :bind ( :map org-mode-map (
+               "C-M-i" . completion-at-point ;; Trigger Completion at point
+          ))
+  :config
+  (org-roam-db-autosync-enable)
+)
+
+(use-package! websocket
+    :after org-roam)
+
+(use-package! org-roam-ui
+    :after org-roam
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+    ;; :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+
+(use-package! yasnippet
+  :config
+  (setq yas-snippet-dirs '("~/Documents/snippets"))
+  (yas-global-mode t))
+
+
+(map! :leader
+      (:prefix-map ("r" . "roam")
+        :desc "Org roam Buffer toggle"  "t" #'org-roam-buffer-toggle
+        :desc "Org roam node find"  "f" #'org-roam-node-find
+        :desc "Org roam node insert"  "i" #'org-roam-node-insert
+        :desc "Org roam heading id create"  "h" #'org-id-get-create
+))
