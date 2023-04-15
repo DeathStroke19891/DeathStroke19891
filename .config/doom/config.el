@@ -72,11 +72,11 @@
        x-super-keysym 'meta)
 
 (add-hook 'find-file-hook 'recentf-save-list)
+(add-hook 'find-file-hook 'flyspell-mode)
 
 (use-package! transpose-frame)
 
 (use-package! org-roam
-  :ensure t
   :custom
   (org-roam-directory "~/Documents/orgRoam")
   (setq org-roam-completion-everywhere t)
