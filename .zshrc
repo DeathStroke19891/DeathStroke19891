@@ -73,6 +73,7 @@ ENABLE_CORRECTION="true"
 plugins=(git sudo aliases colored-man-pages ripgrep rust systemd vi-mode zoxide fd zsh-autosuggestions)
 
 export VI_MODE_SET_CURSOR=true
+export XDG_SCREENSHOTS_DIR="/home/parzival/Screenshots"
 source $ZSH/oh-my-zsh.sh
 
 alias cd=z
