@@ -117,7 +117,7 @@
         "format-linked": "{ifname} (No IP) ",
         "format-disconnected": "睊 Disconnected",
         "tooltip-format-wifi": "Signal Strenght: {signalStrength}% | Down Speed: {bandwidthDownBits}, Up Speed: {bandwidthUpBits}",
-        "on-click": "wofi4wifi"
+        "on-click": "wifi4wofi"
     },
     "battery": {
         "states": {
