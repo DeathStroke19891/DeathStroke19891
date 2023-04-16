@@ -30,11 +30,11 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type "relative")
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/Documents/org/")
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -68,11 +68,13 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-(setq  x-meta-keysym 'super
-       x-super-keysym 'meta)
 
 (add-hook 'find-file-hook 'recentf-save-list)
 (add-hook 'find-file-hook 'flyspell-mode)
+(add-hook 'typescript-mode-hook 'lsp)
+
+(setq  x-meta-keysym 'super
+       x-super-keysym 'meta)
 
 (use-package! transpose-frame)
 
@@ -81,37 +83,67 @@
   (org-roam-directory "~/Documents/orgRoam")
   (setq org-roam-completion-everywhere t)
   :bind ( :map org-mode-map (
-               "C-M-i" . completion-at-point ;; Trigger Completion at point
-          ))
+                             "C-M-i" . completion-at-point ;; Trigger Completion at point
+                             ))
+  :hook (org-roam-mode . org-roam-ui-mode)
   :config
-  (org-roam-db-autosync-enable)
-)
+  (org-roam-db-autosync-enable))
 
 (use-package! websocket
-    :after org-roam)
+  :after org-roam)
 
 (use-package! org-roam-ui
-    :after org-roam
-;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;;         a hookable mode anymore, you're advised to pick something yourself
-;;         if you don't care about startup time, use
-    ;; :hook (after-init . org-roam-ui-mode)
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t))
-
-(use-package! yasnippet
+  :after org-roam
   :config
-  (setq yas-snippet-dirs '("~/Documents/snippets"))
-  (yas-global-mode t))
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
+
 
 
 (map! :leader
       (:prefix-map ("r" . "roam")
-        :desc "Org roam Buffer toggle"  "t" #'org-roam-buffer-toggle
-        :desc "Org roam node find"  "f" #'org-roam-node-find
-        :desc "Org roam node insert"  "i" #'org-roam-node-insert
-        :desc "Org roam heading id create"  "h" #'org-id-get-create
-))
+       :desc "Org roam Buffer toggle"  "t" #'org-roam-buffer-toggle
+       :desc "Org roam node find"  "f" #'org-roam-node-find
+       :desc "Org roam node insert"  "i" #'org-roam-node-insert
+       :desc "Org roam heading id create"  "h" #'org-id-get-create))
+
+(after! yasnippet
+  (use-package! yasnippet
+    :config
+    (setq yas-snippet-dirs '("~/Documents/snippets"))
+    (yas-global-mode t)))
+
+(use-package! lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :commands (lsp)
+  :custom
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  :config
+  (lsp-enable-which-key-integration t)
+  (setq lsp-eldoc-render-all t))
+
+(use-package! lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc--inline-pos 'bottom))
+
+(use-package! typescript-mode
+  :mode "\\.ts\\'"
+  :config
+  (setq typescript-indent-level 2))
+
+(use-package rustic
+  :bind (:map rustic-mode-map
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'sk/rustic-mode-hook))
+
+(defun sk/rustic-mode-hook ()
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t))
+  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
