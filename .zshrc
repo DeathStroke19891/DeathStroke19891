@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/.local/bin:$HOME/.dev/flutter/bin:/usr/lib/jvm/java-19-openjdk/bin:$HOME/Android/cmdline-tools/latest/bin:$HOME/Android/Sdk/platform-tools:$HOME/.config/doom/.emacs.d/bin:$HOME/.dev/node/bin:/usr/local/texlive/2022/bin/x86_64-linux:$HOME/.pub-cache/bin:/usr/local/bin:$HOME/.cargo/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/.dev/flutter/bin:/usr/lib/jvm/java-19-openjdk/bin:$HOME/Android/cmdline-tools/latest/bin:$HOME/Android/Sdk/platform-tools:$HOME/.config/doom/.emacs.d/bin:$HOME/.dev/node/bin:/usr/local/texlive/2022/bin/x86_64-linux:$HOME/.pub-cache/bin:/usr/local/bin:$HOME/.cargo/bin:$HOME/.config/emacs/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -74,6 +74,9 @@ plugins=(git sudo aliases colored-man-pages ripgrep rust systemd vi-mode zoxide 
 
 export VI_MODE_SET_CURSOR=true
 export XDG_SCREENSHOTS_DIR="/home/parzival/Screenshots"
+export JAVA_HOME="/usr/lib/jvm/java-19-openjdk"
+export LD_LIBRARY_PATH="/usr/lib/jvm/java-19-openjdk/lib"
+export CHROME_EXECUTABLE='vivaldi-stable'
 source $ZSH/oh-my-zsh.sh
 
 alias cd=z
@@ -83,6 +86,7 @@ alias reload="source ~/.zshrc"
 alias edit=~/.local/bin/open.sh
 alias vi=vim
 alias sudo=doas
+alias tree=exa --tree
 alias config="git --git-dir=/home/parzival/dotfiles --work-tree=/home/parzival/."
 # User configuration
 
