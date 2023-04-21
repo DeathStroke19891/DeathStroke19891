@@ -86,9 +86,20 @@ alias reload="source ~/.zshrc"
 alias edit=~/.local/bin/open.sh
 alias vi=vim
 alias sudo=doas
-alias tree=exa --tree
+alias tree="exa --tree"
 alias config="git --git-dir=/home/parzival/dotfiles --work-tree=/home/parzival/."
+alias undoomify="source ~/shell-scripts/undoomify.sh"
+alias doomify="source ~/shell-scripts/doomify.sh"
+alias emacs-change-state="source ~/shell-scripts/emacs-change-state.sh"
+
 # User configuration
+
+if [ -d "/home/parzival/.config/emacs.doom" ]
+then
+    export DOOM="false"
+else
+    export DOOM="true"
+fi
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
