@@ -74,8 +74,8 @@ plugins=(git sudo aliases colored-man-pages ripgrep rust systemd vi-mode zoxide 
 
 export VI_MODE_SET_CURSOR=true
 export XDG_SCREENSHOTS_DIR="/home/parzival/Screenshots"
-export JAVA_HOME="/usr/lib/jvm/java-19-openjdk"
-export LD_LIBRARY_PATH="/usr/lib/jvm/java-19-openjdk/lib"
+export JAVA_HOME="/usr/lib/jvm/java-20-openjdk"
+export LD_LIBRARY_PATH="/usr/lib/jvm/java-20-openjdk/lib"
 export CHROME_EXECUTABLE='vivaldi-stable'
 source $ZSH/oh-my-zsh.sh
 
