@@ -74,6 +74,7 @@ plugins=(git sudo aliases colored-man-pages ripgrep rust systemd vi-mode zoxide 
 
 export EDITOR="vim"
 export VISUAL="vim"
+
 export VI_MODE_SET_CURSOR=true
 export XDG_SCREENSHOTS_DIR="/home/parzival/Screenshots"
 export JAVA_HOME="/usr/lib/jvm/java-20-openjdk"
