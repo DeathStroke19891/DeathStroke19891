@@ -26,11 +26,11 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-monokai-pro)
+(setq doom-theme 'doom-monokai-machine)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type "relative")
+(setq display-line-numbers-type 'relative)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -115,6 +115,13 @@
     (setq yas-snippet-dirs '("~/Documents/snippets"))
     (yas-global-mode t)))
 
+(use-package! company
+  :after lsp-mode
+  :hook (prog-mode . company-mode)
+  :custom
+  (setq company-minimum-prefix-length 1)
+  (setq company-idle-delay 0.0))
+
 (use-package! lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
@@ -133,7 +140,9 @@
 (use-package! typescript-mode
   :mode "\\.ts\\'"
   :config
-  (setq typescript-indent-level 2))
+  (setq typescript-indent-level 2)
+  :custom
+  (create-lockfiles nil))
 
 (use-package rustic
   :bind (:map rustic-mode-map
@@ -151,3 +160,4 @@
 (setq key-chord-two-keys-delay 0.5)
 (key-chord-define evil-insert-state-map "kj" 'evil-normal-state)
 (key-chord-mode 1)
+
