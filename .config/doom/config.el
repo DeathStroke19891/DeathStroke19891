@@ -10,8 +10,8 @@
 
 (setq doom-theme 'doom-monokai-machine)
 
-(setq doom-font (font-spec :family "Iosevka Nerd Font Mono" :size 15)
-      doom-variable-pitch-font (font-spec :family "Cantarell" :size 15)
+(setq doom-font (font-spec :family "Iosevka Nerd Font Mono" :size 14)
+      doom-variable-pitch-font (font-spec :family "Iosevka Nerd Font Mono" :size 14)
       doom-big-font (font-spec :family "Iosevka Nerd Font Mono" :size 24))
 (after! doom-themes
   (setq doom-themes-enable-bold t
@@ -63,6 +63,12 @@
        :desc "Org roam node find"  "f" #'org-roam-node-find
        :desc "Org roam node insert"  "i" #'org-roam-node-insert
        :desc "Org roam heading id create"  "h" #'org-id-get-create))
+
+(use-package! org-auto-tangle
+  :defer t
+  :hook (org-mode . org-auto-tangle-mode)
+  :config
+  (setq org-auto-tangle-default t))
 
 (map! :leader
       (:prefix ("e". "evaluate")
