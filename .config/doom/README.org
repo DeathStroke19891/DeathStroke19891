@@ -3,25 +3,6 @@
 #+DATE:  [24-04-2023]
 #+PROPERTY: header-args :tangle config.el
 
-* Table of Contents :toc:
-- [[#doom-emacs-config][Doom Emacs Config]]
-- [[#name-and-email-address][Name and Email Address]]
-- [[#window-manager-mutual-exclusion][Window Manager Mutual Exclusion]]
-- [[#to-be-or-not-to-be][To be or not to be]]
-- [[#doom-theme][Doom Theme]]
-- [[#fonts][Fonts]]
-- [[#line-settings][Line Settings]]
-- [[#hookers][Hookers]]
-- [[#transpose-frame][Transpose-Frame]]
-- [[#org-mode][Org Mode]]
-  - [[#org-roam][Org Roam]]
-- [[#elegant-weapons-for-a-more-civilized-age][Elegant Weapons for a more civilized age]]
-- [[#m-x-vscode][M-x vscode]]
-  - [[#typescript-mode][Typescript Mode]]
-  - [[#rustic-mode][Rustic Mode]]
-- [[#company-ultimate-code-completion-backend][Company (Ultimate code completion backend)]]
-- [[#my-elves][My elves]]
-
 * Doom Emacs Config
 It is a story as old as time. A stubborn, shell-dwelling, and melodramatic vimmer—envious of the features of modern text editors—spirals into despair before he succumbs to the dark side. This is his config.
 
