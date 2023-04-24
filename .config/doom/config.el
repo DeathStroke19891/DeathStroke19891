@@ -33,21 +33,6 @@
 
 (use-package! transpose-frame)
 
-(defun sk/org-font-setup ()
- (dolist
-      (face
-       '((org-level-1 1.7 "#78dce8" ultra-bold)
-         (org-level-2 1.6 "#ab9df2" extra-bold)
-         (org-level-3 1.5 "#a9dc76" bold)
-         (org-level-4 1.4 "#fc9867" semi-bold)
-         (org-level-5 1.3 "#ff6188" normal)
-         (org-level-6 1.2 "#ffd866" normal)
-         (org-level-7 1.1 "#78dce8" normal)
-         (org-level-8 1.0 "#ab9df2" normal)))
-    (set-face-attribute (nth 0 face) nil :font doom-variable-pitch-font :weight (nth 3 face) :height (nth 1 face) :foreground (nth 2 face)))
-    (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf"))
-(sk/org-font-setup)
-
 (after! org
   (setq org-ellipsis " ▼ ")
   (setq org-superstar-headline-bullets-list '("◉  " "●  " "○  " "◆  " "●  " "○  " "◆  "))
@@ -71,6 +56,21 @@
              "|"                 ; The pipe necessary to separate "active" states and "inactive" states
              "DONE"           ; Task has been completed
              "CANCELLED" )))) ; Task has been cancelled
+
+(defun sk/org-font-setup ()
+(with-eval-after-load 'org-faces
+   (dolist (face
+            '((org-level-1 1.7 "#78dce8" ultra-bold)
+              (org-level-2 1.6 "#ab9df2" extra-bold)
+              (org-level-3 1.5 "#a9dc76" bold)
+              (org-level-4 1.4 "#fc9867" semi-bold)
+              (org-level-5 1.3 "#ff6188" normal)
+              (org-level-6 1.2 "#ffd866" normal)
+              (org-level-7 1.1 "#78dce8" normal)
+              (org-level-8 1.0 "#ab9df2" normal)))
+    (set-face-attribute (nth 0 face) nil :font doom-variable-pitch-font :weight (nth 3 face) :height (nth 1 face) :foreground (nth 2 face)))
+  (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf")))
+(sk/org-font-setup)
 
 (use-package! org-roam
   :custom
