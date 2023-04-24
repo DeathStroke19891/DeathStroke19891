@@ -11,7 +11,7 @@
 (setq doom-theme 'doom-monokai-machine)
 
 (setq doom-font (font-spec :family "Iosevka Nerd Font Mono" :size 14)
-      doom-variable-pitch-font (font-spec :family "Iosevka Nerd Font Mono" :size 14)
+      doom-variable-pitch-font (font-spec :family "TerminessTTF Nerd Font" :size 14)
       doom-big-font (font-spec :family "Iosevka Nerd Font Mono" :size 24))
 (after! doom-themes
   (setq doom-themes-enable-bold t
@@ -33,7 +33,44 @@
 
 (use-package! transpose-frame)
 
+(defun sk/org-font-setup ()
+ (dolist
+      (face
+       '((org-level-1 1.7 "#78dce8" ultra-bold)
+         (org-level-2 1.6 "#ab9df2" extra-bold)
+         (org-level-3 1.5 "#a9dc76" bold)
+         (org-level-4 1.4 "#fc9867" semi-bold)
+         (org-level-5 1.3 "#ff6188" normal)
+         (org-level-6 1.2 "#ffd866" normal)
+         (org-level-7 1.1 "#78dce8" normal)
+         (org-level-8 1.0 "#ab9df2" normal)))
+    (set-face-attribute (nth 0 face) nil :font doom-variable-pitch-font :weight (nth 3 face) :height (nth 1 face) :foreground (nth 2 face)))
+    (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf"))
+(sk/org-font-setup)
 
+(after! org
+  (setq org-ellipsis " ▼ ")
+  (setq org-superstar-headline-bullets-list '("◉  " "●  " "○  " "◆  " "●  " "○  " "◆  "))
+  (setq org-superstar-itembullet-alist '((?+ . ?➤) (?- . ?✦))) ; changes +/- symbols in item lists
+  (setq org-log-done 'time)
+  (setq org-hide-emphasis-markers t)
+  (setq org-link-abbrev-alist    ; This overwrites the default Doom org-link-abbrev-list
+          '(("google" . "http://www.google.com/search?q=")
+            ("arch-wiki" . "https://wiki.archlinux.org/index.php/")
+            ("ddg" . "https://duckduckgo.com/?q=")
+            ("wiki" . "https://en.wikipedia.org/wiki/")))
+  (setq org-table-convert-region-max-lines 20000)
+  (setq org-todo-keywords        ; This overwrites the default Doom org-todo-keywords
+          '((sequence
+             "TODO"           ; A task that is ready to be tackled
+             "BLOG"           ; Blog writing assignments
+             "GYM"            ; Things to accomplish at the gym
+             "PROJ"           ; A project that contains other tasks
+             "VIDEO"          ; Video assignments
+             "WAIT"           ; Something is holding up this task
+             "|"                 ; The pipe necessary to separate "active" states and "inactive" states
+             "DONE"           ; Task has been completed
+             "CANCELLED" )))) ; Task has been cancelled
 
 (use-package! org-roam
   :custom
@@ -61,6 +98,8 @@
       (:prefix-map ("r" . "roam")
        :desc "Org roam Buffer toggle"  "t" #'org-roam-buffer-toggle
        :desc "Org roam node find"  "f" #'org-roam-node-find
+       :desc "Show graph"  "g" #'org-roam-mode-ui
+       :desc "Capture to node"  "g" #'org-roam-capture
        :desc "Org roam node insert"  "i" #'org-roam-node-insert
        :desc "Org roam heading id create"  "h" #'org-id-get-create))
 
@@ -69,6 +108,16 @@
   :hook (org-mode . org-auto-tangle-mode)
   :config
   (setq org-auto-tangle-default t))
+
+(defun sk/insert-auto-tangle-tag ()
+  "Insert auto-tangle tag in a literate config."
+  (interactive)
+  (evil-org-open-below 1)
+  (insert "#+auto_tangle: t ")
+  (evil-force-normal-state))
+
+(map! :leader
+      :desc "Insert auto_tangle tag" "i a" #'sk/insert-auto-tangle-tag)
 
 (map! :leader
       (:prefix ("e". "evaluate")
