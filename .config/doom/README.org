@@ -1,0 +1,193 @@
+#+TITLE: Doom Emacs Literate Config
+#+AUTHOR: Sridhar D Kedlaya
+#+DATE:  [24-04-2023]
+#+PROPERTY: header-args :tangle config.el
+
+* Table of Contents :toc:
+- [[#doom-emacs-config][Doom Emacs Config]]
+- [[#name-and-email-address][Name and Email Address]]
+- [[#window-manager-mutual-exclusion][Window Manager Mutual Exclusion]]
+- [[#to-be-or-not-to-be][To be or not to be]]
+- [[#doom-theme][Doom Theme]]
+- [[#fonts][Fonts]]
+- [[#line-settings][Line Settings]]
+- [[#hookers][Hookers]]
+- [[#transpose-frame][Transpose-Frame]]
+- [[#org-mode][Org Mode]]
+  - [[#org-roam][Org Roam]]
+- [[#elegant-weapons-for-a-more-civilized-age][Elegant Weapons for a more civilized age]]
+- [[#m-x-vscode][M-x vscode]]
+  - [[#typescript-mode][Typescript Mode]]
+  - [[#rustic-mode][Rustic Mode]]
+- [[#company-ultimate-code-completion-backend][Company (Ultimate code completion backend)]]
+- [[#my-elves][My elves]]
+
+* Doom Emacs Config
+It is a story as old as time. A stubborn, shell-dwelling, and melodramatic vimmer—envious of the features of modern text editors—spirals into despair before he succumbs to the dark side. This is his config.
+
+*Doom Emacs* is a configuration framework for GNU Emacs and the stubborn martian hacker. This is my personal Doom Emacs configuration
+* Name and Email Address
+This is my name and email address. Used everywhere including git commits made by magit.
+#+BEGIN_SRC elisp
+(setq user-full-name "Sridhar D Kedlaya"
+      user-mail-address "sridhar@sridharkedlaya.xyz")
+#+END_SRC
+* Window Manager Mutual Exclusion
+Changing the meta key from alt to right super to make keybindings mutually exclusive.
+#+BEGIN_SRC elisp
+(setq  x-meta-keysym 'super
+       x-super-keysym 'meta)
+#+END_SRC
+* To be or not to be
+Bind "kj" to go into normal mode from evil-insert mode.
+#+BEGIN_SRC elisp
+(setq key-chord-two-keys-delay 0.5)
+(key-chord-define evil-insert-state-map "kj" 'evil-normal-state)
+(key-chord-mode 1)
+#+END_SRC
+* Doom Theme
+Setting the theme to doom-monokai-machine.
+#+BEGIN_SRC elisp
+(setq doom-theme 'doom-monokai-machine)
+#+END_SRC
+* Fonts
+Settings related to fonts within Doom Emacs.
+#+BEGIN_SRC elisp
+(setq doom-font (font-spec :family "Iosevka Nerd Font Mono" :size 15)
+      doom-variable-pitch-font (font-spec :family "Cantarell" :size 15)
+      doom-big-font (font-spec :family "Iosevka Nerd Font Mono" :size 24))
+(after! doom-themes
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t))
+(custom-set-faces!
+  '(font-lock-comment-face :slant italic)
+  '(font-lock-keyword-face :slant italic))
+#+END_SRC
+* Line Settings
+Line Settings for my Doom emacs
+#+BEGIN_SRC elisp
+(setq display-line-numbers-type 'relative)
+(map! :leader
+      (:prefix ("t" . "toggle")
+       :desc "Toggle line numbers"            "l" #'doom/toggle-line-numbers
+       :desc "Toggle line highlight in frame" "h" #'hl-line-mode
+       :desc "Toggle line highlight globally" "H" #'global-hl-line-mode
+       :desc "Toggle truncate lines"          "t" #'toggle-truncate-lines))
+#+END_SRC
+* Hookers
+Making spell check and recent files work in daemon mode.
+#+BEGIN_SRC elisp
+(add-hook 'find-file-hook 'recentf-save-list)
+(add-hook 'find-file-hook 'flyspell-mode)
+#+END_SRC
+* Transpose-Frame
+Window-Management in Emacs? Window-Management in Emacs
+#+BEGIN_SRC elisp
+(use-package! transpose-frame)
+#+END_SRC
+* Org Mode
+#+BEGIN_SRC elisp
+
+#+END_SRC
+** Org Roam
+#+BEGIN_SRC elisp
+(use-package! org-roam
+  :custom
+  (org-roam-directory "~/Documents/orgRoam")
+  (setq org-roam-completion-everywhere t)
+  :bind ( :map org-mode-map (
+                             "C-M-i" . completion-at-point ;; Trigger Completion at point
+                             ))
+  :hook (org-roam-mode . org-roam-ui-mode)
+  :config
+  (org-roam-db-autosync-enable))
+
+(use-package! websocket
+  :after org-roam)
+
+(use-package! org-roam-ui
+  :after org-roam
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
+
+(map! :leader
+      (:prefix-map ("r" . "roam")
+       :desc "Org roam Buffer toggle"  "t" #'org-roam-buffer-toggle
+       :desc "Org roam node find"  "f" #'org-roam-node-find
+       :desc "Org roam node insert"  "i" #'org-roam-node-insert
+       :desc "Org roam heading id create"  "h" #'org-id-get-create))
+#+END_SRC
+* Elegant Weapons for a more civilized age
+Repl everywhere.
+#+BEGIN_SRC elisp
+(map! :leader
+      (:prefix ("e". "evaluate")
+       :desc "Evaluate elisp in buffer"  "b" #'eval-buffer
+       :desc "Evaluate defun"            "d" #'eval-defun
+       :desc "Evaluate elisp expression" "e" #'eval-expression
+       :desc "Evaluate last sexpression" "l" #'eval-last-sexp
+       :desc "Evaluate elisp in region"  "r" #'eval-region))
+#+END_SRC
+* M-x vscode
+#+BEGIN_SRC elisp
+(use-package! lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :commands (lsp)
+  :custom
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  :config
+  (lsp-enable-which-key-integration t)
+  (setq lsp-eldoc-render-all t))
+
+(use-package! lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc--inline-pos 'bottom))
+#+END_SRC
+** Typescript Mode
+#+BEGIN_SRC elisp
+(use-package! typescript-mode
+  :mode "\\.ts\\'"
+  :config
+  (setq typescript-indent-level 2)
+  (add-hook 'typescript-mode-hook 'lsp)
+  :custom
+  (create-lockfiles nil))
+#+END_SRC
+** Rustic Mode
+#+BEGIN_SRC elisp
+(use-package rustic
+  :bind (:map rustic-mode-map
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'sk/rustic-mode-hook))
+
+(defun sk/rustic-mode-hook ()
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t))
+  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+#+END_SRC
+* Company (Ultimate code completion backend)
+#+BEGIN_SRC elisp
+(use-package! company
+  :after lsp-mode
+  :hook (prog-mode . company-mode)
+  :custom
+  (setq company-minimum-prefix-length 1)
+  (setq company-idle-delay 0.0))
+#+END_SRC
+* My elves
+They type so I don't have to
+#+BEGIN_SRC elisp
+(after! yasnippet
+  (use-package! yasnippet
+    :config
+    (setq yas-snippet-dirs '("~/Documents/snippets"))
+    (yas-global-mode t)))
+#+END_SRC
