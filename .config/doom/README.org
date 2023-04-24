@@ -9,7 +9,7 @@ It is a story as old as time. A stubborn, shell-dwelling, and melodramatic vimme
 
 *Doom Emacs* is a configuration framework for GNU Emacs and the stubborn martian hacker. This is my personal Doom Emacs configuration
 [[./config.png]]
-[[./Dashboard.png][Dashboard]]
+[[./Dashboard.png]]
 * Name and Email Address
 This is my name and email address. Used everywhere including git commits made by magit.
 #+BEGIN_SRC elisp
