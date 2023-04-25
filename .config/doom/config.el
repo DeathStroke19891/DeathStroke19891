@@ -143,7 +143,7 @@
   (lsp-ui-doc--inline-pos 'bottom))
 
 (use-package! typescript-mode
-  :mode "\\.ts\\'"
+  :mode "\\.ts|.tsx|.js|.jsx\\'"
   :config
   (setq typescript-indent-level 2)
   (add-hook 'typescript-mode-hook 'lsp)
