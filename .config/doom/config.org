@@ -58,19 +58,101 @@ Line Settings for my Doom emacs
        :desc "Toggle line highlight globally" "H" #'global-hl-line-mode
        :desc "Toggle truncate lines"          "t" #'toggle-truncate-lines))
 #+END_SRC
+* Dire Circumstances
+Dired is the file manager within Emacs.
+** Keybindings within Dired
+#+BEGIN_SRC elisp
+(map! :leader
+      (:prefix ("d" . "dired")
+       :desc "Open dired" "d" #'dired
+       :desc "Dired jump to current" "j" #'dired-jump)
+      (:after dired
+       (:map dired-mode-map
+        :desc "Peep-dired image previews" "d p" #'peep-dired
+        :desc "Dired view file"           "d v" #'dired-view-file)))
+
+(setq peep-dired-cleanup-on-disable t)
+
+(evil-define-key 'normal dired-mode-map
+  (kbd "M-RET") 'dired-display-file
+  (kbd "h") 'dired-up-directory
+  (kbd "l") 'dired-open-file ; use dired-find-file instead of dired-open.
+  (kbd "m") 'dired-mark
+  (kbd "t") 'dired-toggle-marks
+  (kbd "u") 'dired-unmark
+  (kbd "C") 'dired-do-copy
+  (kbd "D") 'dired-do-delete
+  (kbd "J") 'dired-goto-file
+  (kbd "M") 'dired-do-chmod
+  (kbd "O") 'dired-do-chown
+  (kbd "P") 'dired-do-print
+  (kbd "R") 'dired-do-rename
+  (kbd "T") 'dired-do-touch
+  (kbd "Y") 'dired-copy-filenamecopy-filename-as-kill ; copies filename to kill ring.
+  (kbd "Z") 'dired-do-compress
+  (kbd "+") 'dired-create-directory
+  (kbd "-") 'dired-do-kill-lines
+  (kbd "% l") 'dired-downcase
+  (kbd "% m") 'dired-mark-files-regexp
+  (kbd "% u") 'dired-upcase
+  (kbd "* %") 'dired-mark-files-regexp
+  (kbd "* .") 'dired-mark-extension
+  (kbd "* /") 'dired-mark-directories
+  (kbd "; d") 'epa-dired-do-decrypt
+  (kbd "; e") 'epa-dired-do-encrypt)
+
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+(setq dired-open-extensions '(("gif" . "viewnior")
+                              ("jpg" . "viewnior")
+                              ("png" . "viewnior")
+                              ("mkv" . "mpv")
+                              ("mp4" . "mpv")))
+#+END_SRC
+** Keybindings within Dired with Peep-Dired-Mode Enabled
+#+BEGIN_SRC elisp
+(evil-define-key 'normal peep-dired-mode-map
+  (kbd "j") 'peep-dired-next-file
+  (kbd "k") 'peep-dired-prev-file)
+(add-hook 'peep-dired-hook 'evil-normalize-keymaps)
+#+END_SRC
+** Making deleted files go to trash can
+#+BEGIN_SRC elisp
+(setq delete-by-moving-to-trash t
+      trash-directory "~/.local/share/Trash/files/")
+#+END_SRC
+
 * Hookers
 Making spell check and recent files work in daemon mode.
 #+BEGIN_SRC elisp
 (add-hook 'find-file-hook 'recentf-save-list)
 (add-hook 'find-file-hook 'flyspell-mode)
 #+END_SRC
+* Teleport
+*Teleport*!!
+#+BEGIN_SRC elisp
+(map! :leader
+      (:prefix ("=" . "open file")
+       :desc "Edit agenda file"      "a" #'(lambda () (interactive) (find-file "~/Documents/org/agenda.org"))
+       :desc "Edit doom config.org"  "c" #'(lambda () (interactive) (find-file "~/.config/doom/config.org"))
+       :desc "Edit doom init.el"     "i" #'(lambda () (interactive) (find-file "~/.config/doom/init.el"))
+       :desc "Edit doom packages.el" "p" #'(lambda () (interactive) (find-file "~/.config/doom/packages.el"))))
+#+END_SRC
+* The search engine of the future
+Vertico cofig
+#+BEGIN_SRC elisp
+(use-package! vertico
+  :custom
+  (vertico-cycle t)
+  :init
+  (vertico-mode))
+#+END_SRC
 * Transpose-Frame
 Window-Management in Emacs? Window-Management in Emacs
 #+BEGIN_SRC elisp
 (use-package! transpose-frame)
 #+END_SRC
-* Org Mode
-Org Mode is one of the hallmark features of Emacs.
+* Veni, Vedi, Vici
+Org Mode is one of the hallmark features of Emacs. One text format to conquer them all
 ** Nicer Heading Bullets
 #+BEGIN_SRC elisp
 (after! org
@@ -87,15 +169,22 @@ Org Mode is one of the hallmark features of Emacs.
   (setq org-table-convert-region-max-lines 20000)
   (setq org-todo-keywords        ; This overwrites the default Doom org-todo-keywords
           '((sequence
-             "TODO"           ; A task that is ready to be tackled
-             "BLOG"           ; Blog writing assignments
-             "GYM"            ; Things to accomplish at the gym
-             "PROJ"           ; A project that contains other tasks
-             "VIDEO"          ; Video assignments
-             "WAIT"           ; Something is holding up this task
+             "TODO(t)"           ; A task that is ready to be tackled
+             "BLOG(b)"           ; Blog writing assignments
              "|"                 ; The pipe necessary to separate "active" states and "inactive" states
-             "DONE"           ; Task has been completed
-             "CANCELLED" )))) ; Task has been cancelled
+             "DONE(d)"); Task has been completed
+            (sequence
+             "BACKLOG(b)"
+             "PLAN(p)"
+             "READY(r)"
+             "ACITVE(a)"
+             "REVIEW(v)"
+             "WAIT(w@/!)"
+             "HOLD(h)"
+             "|"
+             "COMPLETED(c)"
+             "CANCELLED(k@)"
+             )))) ; Task has been cancelled
 #+END_SRC
 ** Better Font Faces
 #+BEGIN_SRC elisp
@@ -114,7 +203,114 @@ Org Mode is one of the hallmark features of Emacs.
   (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf")))
 (sk/org-font-setup)
 #+END_SRC
-** Org Roam
+** Org Agenda
+*/Non moror faciens agendi/*
+#+BEGIN_SRC elisp
+(use-package! org
+  :commands (org-agenda)
+  :config
+  (setq org-agenda-start-with-log-mode t)
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+  (setq org-agenda-files '("~/Documents/org/agenda.org"
+                           "~/Documents/org/Birthday.org")))
+#+END_SRC
+Tags pro win
+#+BEGIN_SRC elisp
+(setq org-tag-alist
+    '((:startgroup)
+       ; Put mutually exclusive tags here
+       (:endgroup)
+       ("@errand" . ?E)
+       ("@home" . ?H)
+       ("@work" . ?W)
+       ("agenda" . ?a)
+       ("planning" . ?p)
+       ("publish" . ?P)
+       ("batch" . ?b)
+       ("note" . ?n)
+       ("idea" . ?i)
+       ("thinking" . ?t)
+       ("recurring" . ?r)))
+#+END_SRC
+Sed tamen hoc mirabile est
+#+BEGIN_SRC elisp
+(setq org-agenda-custom-commands
+      '(("d" "Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7)))
+          (todo "BLOG"
+                ((org-agenda-overriding-header "Blog Stuff")))
+          (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+
+        ("b" "Blog Stuff"
+         ((todo "BLOG"
+                ((org-agenda-overriding-header "Blog Stuff")))))
+
+        ("e" "Low effort tasks"
+         ((tags-todo "+TODO=\"TODO\"+Effort<15&+Effort>0"
+                     ((org-agenda-overriding-header "Low Effort Tasks")
+                      (org-agenda-max-todos 20)
+                      (org-agenda-files org-agenda-files)))))
+
+        ("w" "Workflow Status"
+         ((todo "WAIT"
+                ((org-agenda-overriding-header "Waiting on External")
+                 (org-agenda-files org-agenda-files)))
+          (todo "REVIEW"
+                ((org-agenda-overriding-header "In Review")
+                 (org-agenda-files org-agenda-files)))
+          (todo "PLAN"
+                ((org-agenda-overriding-header "In Planning")
+                 (org-agenda-todo-list-sublevels nil)
+                 (org-agenda-files org-agenda-files)))
+          (todo "BACKLOG"
+                ((org-agenda-overriding-header "Project Backlog")
+                 (org-agenda-todo-list-sublevels nil)
+                 (org-agenda-files org-agenda-files)))
+          (todo "READY"
+                ((org-agenda-overriding-header "Ready for Work")
+                 (org-agenda-files org-agenda-files)))
+          (todo "ACTIVE"
+                ((org-agenda-overriding-header "Active Projects")
+                 (org-agenda-files org-agenda-files)))
+          (todo "COMPLETED"
+                ((org-agenda-overriding-header "Completed Projects")
+                 (org-agenda-files org-agenda-files)))
+          (todo "CANCELLED"
+                ((org-agenda-overriding-header "Cancelled Projects")
+                 (org-agenda-files org-agenda-files)))))))
+#+END_SRC
+Archiving automatice
+#+BEGIN_SRC elisp
+(setq org-refile-targets
+    '(("archive.org" :maxlevel . 1)
+      ("agenda.org" :maxlevel . 1)))
+
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
+#+END_SRC
+*** Org capture
+Capture notes as never before with capture templates.
+#+BEGIN_SRC elisp
+(use-package! org
+  :commands (org-capture)
+  :config
+  (setq org-capture-templates
+        `(("t" "Tasks / Projects")
+          ("tt" "Task" entry (file+olp "~/Documents/org/agenda.org" "in the flow")
+           "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+
+          ("w" "Workflows")
+          ("we" "Checking Email" entry (file+olp+datetree "~/Documents/org/agenda.org" "inbox")
+           "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
+
+          ("m" "Metrics Capture")
+          ("mw" "Weight" table-line (file+headline "~/Documents/org/metrics.org" "Weight")
+           "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t))))
+
+  (define-key global-map (kbd "C-c t")
+    (lambda () (interactive) (org-capture nil "tt")))
+#+END_SRC
+** Second Brain? Second Brain
 #+BEGIN_SRC elisp
 (use-package! org-roam
   :custom
@@ -125,7 +321,15 @@ Org Mode is one of the hallmark features of Emacs.
                              ))
   :hook (org-roam-mode . org-roam-ui-mode)
   :config
-  (org-roam-db-autosync-enable))
+  (org-roam-db-autosync-enable)
+  :custom
+  (defun sk/org-roam-node-insert-immediate (arg &rest args)
+    (interactive "P")
+    (let ((args (cons arg args))
+          (org-roam-capture-templates (list (append (car org-roam-capture-templates)
+                                                    '(:immediate-finish t)))))
+      (apply #'org-roam-node-insert args))))
+
 
 (use-package! websocket
   :after org-roam)
@@ -145,7 +349,26 @@ Org Mode is one of the hallmark features of Emacs.
        :desc "Show graph"  "g" #'org-roam-mode-ui
        :desc "Capture to node"  "g" #'org-roam-capture
        :desc "Org roam node insert"  "i" #'org-roam-node-insert
+       :desc "Org roam node insert immediate"  "i" #'sk/org-roam-node-insert-immediate
        :desc "Org roam heading id create"  "h" #'org-id-get-create))
+#+END_SRC
+*** Capture
+Capture templates for roam.
+#+BEGIN_SRC elisp
+(use-package! org-roam
+  :custom
+  (org-roam-capture-templates
+   '(("d" "default" plain
+      "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
+      :unnarrowed t)
+     ("w" "word" plain
+      "* Definition\n%?\n* Examlpe\n1. "
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
+      :unnarrowed t)
+     ("p" "project" plain "* Goals\n%?\n* Tasks\n** TODO Add initial tasks\n\n* Dates\n"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: Project")
+      :unnarrowed t))))
 #+END_SRC
 ** Org-babel-tangle
 #+BEGIN_SRC elisp

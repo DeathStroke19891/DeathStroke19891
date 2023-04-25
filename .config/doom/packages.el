@@ -45,6 +45,8 @@
 (package! transpose-frame)
 (package! key-chord)
 (package! org-auto-tangle)
+(package! peep-dired)
+(package! dired-open)
 
 
 ;; Doom's packages are pinned to a specific commit and updated from release to
