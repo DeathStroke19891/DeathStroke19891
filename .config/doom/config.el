@@ -143,7 +143,7 @@
   (lsp-ui-doc--inline-pos 'bottom))
 
 (use-package! typescript-mode
-  :mode "\\.ts|.tsx|.js|.jsx\\'"
+  :mode "\\.ts\\'"
   :config
   (setq typescript-indent-level 2)
   (add-hook 'typescript-mode-hook 'lsp)
@@ -162,6 +162,12 @@
   (when buffer-file-name
     (setq-local buffer-save-without-query t))
   (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+
+(use-package! rjsx-mode
+  :mode "\\.jsx\\'"
+  :hook (rjsx-mode . lsp)
+  :custom
+  (create-lockfiles nil))
 
 (use-package! company
   :after lsp-mode

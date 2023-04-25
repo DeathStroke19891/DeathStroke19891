@@ -196,7 +196,7 @@ Repl everywhere.
 ** Typescript Mode
 #+BEGIN_SRC elisp
 (use-package! typescript-mode
-  :mode "\\.ts|.tsx|.js|.jsx\\'"
+  :mode "\\.ts\\'"
   :config
   (setq typescript-indent-level 2)
   (add-hook 'typescript-mode-hook 'lsp)
@@ -217,6 +217,14 @@ Repl everywhere.
   (when buffer-file-name
     (setq-local buffer-save-without-query t))
   (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+#+END_SRC
+** React Mode
+#+BEGIN_SRC elisp
+(use-package! rjsx-mode
+  :mode "\\.jsx\\'"
+  :hook (rjsx-mode . lsp)
+  :custom
+  (create-lockfiles nil))
 #+END_SRC
 * Company (Ultimate code completion backend)
 #+BEGIN_SRC elisp
