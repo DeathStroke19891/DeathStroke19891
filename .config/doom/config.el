@@ -10,6 +10,39 @@
 
 (setq doom-theme 'doom-monokai-machine)
 
+(defvar fancy-splash-image-directory
+  (expand-file-name "~/.config/doom/misc/splash-images/" doom-private-dir)
+  "Directory in which to look for splash image templates.")
+
+(defvar fancy-splash-image-template
+  (expand-file-name "emacs-e-template.svg" fancy-splash-image-directory)
+  "Default template svg used for the splash image.
+Colours are substituted as per `fancy-splash-template-colours'.")
+
+(defvar fancy-splash-template-colours
+  '(("#111112" :face default   :attr :foreground)
+    ("#8b8c8d" :face shadow)
+    ("#eeeeef" :face default   :attr :background)
+    ("#e66100" :face highlight :attr :background)
+    ("#1c71d8" :face font-lock-keyword-face)
+    ("#f5c211" :face font-lock-type-face)
+    ("#813d9c" :face font-lock-constant-face)
+    ("#865e3c" :face font-lock-function-name-face)
+    ("#2ec27e" :face font-lock-string-face)
+    ("#c01c28" :face error)
+    ("#000001" :face ansi-color-black)
+    ("#ff0000" :face ansi-color-red)
+    ("#ff00ff" :face ansi-color-magenta)
+    ("#00ff00" :face ansi-color-green)
+    ("#ffff00" :face ansi-color-yellow)
+    ("#0000ff" :face ansi-color-blue)
+    ("#00ffff" :face ansi-color-cyan)
+    ("#fffffe" :face ansi-color-white))
+   "Alist of colour-replacement plists.
+Each plist is of the form (\"$placeholder\" :doom-color 'key :face 'face).
+If the current theme is a doom theme :doom-color will be used,
+otherwise the colour will be face foreground.")
+
 (setq doom-font (font-spec :family "Iosevka Nerd Font Mono" :size 14)
       doom-variable-pitch-font (font-spec :family "TerminessTTF Nerd Font" :size 14)
       doom-big-font (font-spec :family "Iosevka Nerd Font Mono" :size 24))
@@ -103,21 +136,22 @@
 (after! org
   (setq org-ellipsis " ▼ ")
   (setq org-superstar-headline-bullets-list '("◉  " "●  " "○  " "◆  " "●  " "○  " "◆  "))
-  (setq org-superstar-itembullet-alist '((?+ . ?➤) (?- . ?✦))) ; changes +/- symbols in item lists
+  (setq org-superstar-itembullet-alist '((?+ . ?✦) (?- . ?➤)))
   (setq org-log-done 'time)
   (setq org-hide-emphasis-markers t)
-  (setq org-link-abbrev-alist    ; This overwrites the default Doom org-link-abbrev-list
+  (setq org-link-abbrev-alist
           '(("google" . "http://www.google.com/search?q=")
             ("arch-wiki" . "https://wiki.archlinux.org/index.php/")
             ("ddg" . "https://duckduckgo.com/?q=")
             ("wiki" . "https://en.wikipedia.org/wiki/")))
   (setq org-table-convert-region-max-lines 20000)
-  (setq org-todo-keywords        ; This overwrites the default Doom org-todo-keywords
+  (setq org-todo-keywords
           '((sequence
-             "TODO(t)"           ; A task that is ready to be tackled
-             "BLOG(b)"           ; Blog writing assignments
-             "|"                 ; The pipe necessary to separate "active" states and "inactive" states
-             "DONE(d)"); Task has been completed
+             "TODO(t)"
+             "Note(n)"
+             "BLOG(b)"
+             "|"
+             "DONE(d)")
             (sequence
              "BACKLOG(b)"
              "PLAN(p)"
@@ -241,6 +275,13 @@
   (define-key global-map (kbd "C-c t")
     (lambda () (interactive) (org-capture nil "tt")))
 
+  (defun sk/org-roam-node-insert-immediate (arg &rest args)
+    (interactive "P")
+    (let ((args (cons arg args))
+          (org-roam-capture-templates (list (append (car org-roam-capture-templates)
+                                                    '(:immediate-finish t)))))
+      (apply #'org-roam-node-insert args)))
+
 (use-package! org-roam
   :custom
   (org-roam-directory "~/Documents/orgRoam")
@@ -248,16 +289,11 @@
   :bind ( :map org-mode-map (
                              "C-M-i" . completion-at-point ;; Trigger Completion at point
                              ))
-  :hook (org-roam-mode . org-roam-ui-mode)
+  ;:hook (org-roam-mode . org-roam-ui-mode)
   :config
   (org-roam-db-autosync-enable)
   :custom
-  (defun sk/org-roam-node-insert-immediate (arg &rest args)
-    (interactive "P")
-    (let ((args (cons arg args))
-          (org-roam-capture-templates (list (append (car org-roam-capture-templates)
-                                                    '(:immediate-finish t)))))
-      (apply #'org-roam-node-insert args))))
+  (sk/org-roam-node-insert-immediate))
 
 
 (use-package! websocket
@@ -278,7 +314,7 @@
        :desc "Show graph"  "g" #'org-roam-mode-ui
        :desc "Capture to node"  "g" #'org-roam-capture
        :desc "Org roam node insert"  "i" #'org-roam-node-insert
-       :desc "Org roam node insert immediate"  "i" #'sk/org-roam-node-insert-immediate
+       :desc "Org roam node insert immediate"  "I" #'sk/org-roam-node-insert-immediate
        :desc "Org roam heading id create"  "h" #'org-id-get-create))
 
 (use-package! org-roam
@@ -289,11 +325,11 @@
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
       :unnarrowed t)
      ("w" "word" plain
-      "* Definition\n%?\n* Examlpe\n1. "
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
+      "* Definition\n%?\n* Example\n1. "
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+tags: word\n")
       :unnarrowed t)
      ("p" "project" plain "* Goals\n%?\n* Tasks\n** TODO Add initial tasks\n\n* Dates\n"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: Project")
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+tags: project")
       :unnarrowed t))))
 
 (use-package! org-auto-tangle
@@ -311,6 +347,8 @@
 
 (map! :leader
       :desc "Insert auto_tangle tag" "i a" #'sk/insert-auto-tangle-tag)
+
+
 
 (map! :leader
       (:prefix ("e". "evaluate")
@@ -342,6 +380,9 @@
   (add-hook 'typescript-mode-hook 'lsp)
   :custom
   (create-lockfiles nil))
+
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
 
 (use-package rustic
   :bind (:map rustic-mode-map
