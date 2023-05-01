@@ -43,9 +43,9 @@ Each plist is of the form (\"$placeholder\" :doom-color 'key :face 'face).
 If the current theme is a doom theme :doom-color will be used,
 otherwise the colour will be face foreground.")
 
-(setq doom-font (font-spec :family "Iosevka Nerd Font Mono" :size 14)
-      doom-variable-pitch-font (font-spec :family "TerminessTTF Nerd Font" :size 14)
-      doom-big-font (font-spec :family "Iosevka Nerd Font Mono" :size 24))
+(setq doom-font (font-spec :family "SpaceMono Nerd Font Mono" :size 13)
+      doom-variable-pitch-font (font-spec :family "SpaceMono Nerd Font" :size 13)
+      doom-big-font (font-spec :family "SpaceMono Nerd Font Mono" :size 24))
 (after! doom-themes
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t))
@@ -275,7 +275,7 @@ otherwise the colour will be face foreground.")
   (define-key global-map (kbd "C-c t")
     (lambda () (interactive) (org-capture nil "tt")))
 
-  (defun sk/org-roam-node-insert-immediate (arg &rest args)
+(defun sk/org-roam-node-insert-immediate (arg &rest args)
     (interactive "P")
     (let ((args (cons arg args))
           (org-roam-capture-templates (list (append (car org-roam-capture-templates)
