@@ -1,36 +1,33 @@
 {
-    "layer": "top",
+	"layer": "top",
     "position": "top",
     "mod": "dock",
     "exclusive": true,
     "passtrough": false,
     "gtk-layer-shell": true,
     "height": 0,
-    "modules-left": [
-        "clock",
-        "custom/weather",
-        "wlr/workspaces"
-    ],
-    "modules-center": ["hyprland/window"],
-    "modules-right": [
-        "tray",
-        "network",
-        "battery",
-        "custom/updates",
-        "custom/language",
-        "pulseaudio",
-        "pulseaudio#microphone"
-    ],
-
+	"modules-left": ["custom/launcher","clock","wlr/workspaces"],
+	"modules-center": ["hyprland/window"],
+	"modules-right": ["network","battery","pulseaudio","pulseaudio#microphone","backlight","custom/updates","custom/power"],
+	
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "tooltip": false,
+        "format-muted": "󰖁 Muted",
+        "on-scroll-up": "pulsemixer --change-volume +5",
+        "on-scroll-down": "pulsemixer --change-volume -5",
+        "scroll-step": 5,
+        "format-icons": {
+            "headphone": "󰋋",
+            "headset": "󰋎",
+            "phone": "",
+            "car": "",
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+    "on-click": "pulsemixer --toggle-mute",
+    },
     "hyprland/window": {
         "format": "{}"
-    },
-    "custom/weather" : {
-	    	"tooltip" : true,
-		"format" : "{}",
-		"restart-interval": 300,
-		"exec" : "~/.config/waybar/scripts/waybar-wttr.py",
-		"return-type" : "json"
     },
     "wlr/workspaces": {
         "on-scroll-up": "hyprctl dispatch workspace e+1",
@@ -47,64 +44,14 @@
             "default": ""
           }
     },
-    "cpu": {
-        "interval": 10,
-        "format": "󰻠 {}%",
-        "max-length": 10,
-        "on-click": ""
-    },
-     "memory": {
-         "interval": 30,
-         "format": "󰍛 {}%",
-         "format-alt":" {used:0.1f}G",
-         "max-length": 10
-     },
-    "custom/updates": {
-        "exec": "(paru -Qua) | wc -l",
-        "interval": 7200,
-        "format": "󰇚 {}"
-    },
-     "custom/language": {
-         "exec": "cat /tmp/kb_layout",
-         "interval": 3,
-         "format": " {}",
-         "tooltip": false
-    },
-    "tray": {
-        "icon-size": 13,
-        "tooltip": false,
-        "spacing": 10
-    },
-    "clock": {
-        "format": "{:󰥔 %R   %d/%m}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
-    },
-    "pulseaudio": {
-        "format": "{icon} {volume}%",
-        "tooltip": false,
-        "format-muted": "󰖁 Muted",
-        "on-click": "pamixer -t",
-        "on-scroll-up": "pamixer -i 5",
-        "on-scroll-down": "pamixer -d 5",
-        "scroll-step": 5,
-        "format-icons": {
-            "headphone": "󰋋",
-            "hands-free": "",
-            "headset": "󰋎",
-            "phone": "",
-            "car": "",
-            "default": ["󰕿", "󰖀", "󰕾"]
-        },
-	"on-click": "pavucontrol"
-    },
     "pulseaudio#microphone": {
         "format": "{format_source}",
         "tooltip": false,
         "format-source": " {volume}%",
         "format-source-muted": " Muted",
-        "on-click": "pamixer --default-source -t",
-        "on-scroll-up": "pamixer --default-source -i 5",
-        "on-scroll-down": "pamixer --default-source -d 5",
+        "on-click": "pulsemixer --list-sources | grep \"Digital Microphone\" | grep -o \"source-..\" | xargs -I dot pulsemixer --id dot --toggle-mute",
+        "on-scroll-up": "pulsemixer --list-sources | grep \"Digital Microphone\" | grep -o \"source-..\" | xargs -I dot pulsemixer --id dot --change-volume +5",
+        "on-scroll-down": "pulsemixer --list-sources | grep \"Digital Microphone\" | grep -o \"source-..\" | xargs -I dot pulsemixer --id dot --change-volume -5",
         "scroll-step": 5
     },
     "network": {
@@ -115,6 +62,13 @@
         "tooltip-format-wifi": "Signal Strenght: {signalStrength}% | Down Speed: {bandwidthDownBits}, Up Speed: {bandwidthUpBits}",
         "on-click": "wifi4wofi"
     },
+	"backlight": {
+		"tooltip": false,
+		"format": " {}%",
+		"interval":1,
+        "on-scroll-up": "light -A 5",
+		"on-scroll-down": "light -U 5"
+	},
     "battery": {
         "states": {
             "good": 95,
@@ -128,5 +82,36 @@
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
         "format-icons": ["", "", "", "", ""]
-    }
+    },
+	"tray":{
+		"icon-size":18,
+		"spacing": 10
+	},
+    "clock": {
+        "format": "{:󰥔 %R   %d/%m}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+    /* "custom/weather" : {
+	#     	"tooltip" : true,
+	# 	"format" : "{}",
+	# 	"restart-interval": 300,
+	# 	"exec" : "~/.config/waybar/scripts/waybar-wttr.py",
+	# 	"return-type" : "json"
+    # }, */
+    "custom/launcher":{
+        "format": " ",
+        "on-click": "wofi --show drun",
+        "on-click-right": "killall wofi"
+    },
+    "custom/power":{
+        "format": " ",
+        "on-click": "wlogout",
+    },
+    "custom/updates": {
+        "exec": "(paru -Qua) | wc -l",
+        "exec-if": "[[ $(paru -Qua | wc -l) != 0 ]]",
+        "interval": 15,
+        "on-click": "alacritty -e paru -Syu && notify-send 'The system has been updated' ",
+        "format": "󰇚 {}"
+    },
 }
