@@ -49,9 +49,9 @@
         "tooltip": false,
         "format-source": " {volume}%",
         "format-source-muted": " Muted",
-        "on-click": "pulsemixer --list-sources | grep \"Digital Microphone\" | grep -o \"source-..\" | xargs -I dot pulsemixer --id dot --toggle-mute",
-        "on-scroll-up": "pulsemixer --list-sources | grep \"Digital Microphone\" | grep -o \"source-..\" | xargs -I dot pulsemixer --id dot --change-volume +5",
-        "on-scroll-down": "pulsemixer --list-sources | grep \"Digital Microphone\" | grep -o \"source-..\" | xargs -I dot pulsemixer --id dot --change-volume -5",
+        "on-click": "pulsemixer --list-sources | grep \"Microphone\" | tail -n 1 | grep -o \"source-..\" | xargs -I dot pulsemixer --id dot --toggle-mute",
+        "on-scroll-up": "pulsemixer --list-sources | grep \"Microphone\" | tail -n 1 | grep -o \"source-..\" | xargs -I dot pulsemixer --id dot --change-volume +5",
+        "on-scroll-down": "pulsemixer --list-sources | grep \"Microphone\" | tail -n 1 | grep -o \"source-..\" | xargs -I dot pulsemixer --id dot --change-volume -5",
         "scroll-step": 5
     },
     "network": {
@@ -64,7 +64,8 @@
     },
 	"backlight": {
 		"tooltip": false,
-		"format": " {}%",
+		"format": "{icon} {}%",
+        "format-icons": ["󱩏","󱩑","󱩓","󱩕","󰛨"],
 		"interval":1,
         "on-scroll-up": "light -A 5",
 		"on-scroll-down": "light -U 5"
@@ -110,7 +111,7 @@
     "custom/updates": {
         "exec": "(paru -Qua) | wc -l",
         "exec-if": "[[ $(paru -Qua | wc -l) != 0 ]]",
-        "interval": 15,
+        "interval": 100,
         "on-click": "alacritty -e paru -Syu && notify-send 'The system has been updated' ",
         "format": "󰇚 {}"
     },
