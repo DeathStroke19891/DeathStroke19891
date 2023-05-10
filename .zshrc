@@ -94,6 +94,7 @@ alias config="git --git-dir=/home/parzival/dotfiles --work-tree=/home/parzival/.
 alias undoomify="source ~/shell-scripts/undoomify.sh"
 alias doomify="source ~/shell-scripts/doomify.sh"
 alias emacs-change-state="source ~/shell-scripts/emacs-change-state.sh"
+alias rn=ranger
 
 # User configuration
 
