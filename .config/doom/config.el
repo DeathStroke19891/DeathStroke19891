@@ -327,7 +327,7 @@ otherwise the colour will be face foreground.")
       :unnarrowed t)
      ("w" "word" plain
       "* Definition\n%?\n* Example\n1. "
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+tags: word\n")
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: word\n")
       :unnarrowed t)
      ("p" "project" plain "* Goals\n%?\n* Tasks\n** TODO Add initial tasks\n\n*Index\n\n* Dates\n"
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: project")
