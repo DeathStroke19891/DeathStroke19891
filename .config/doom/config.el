@@ -8,7 +8,7 @@
 (key-chord-define evil-insert-state-map "kj" 'evil-normal-state)
 (key-chord-mode 1)
 
-(setq doom-theme 'doom-monokai-machine)
+(setq doom-theme 'doom-sourcerer)
 
 (defvar fancy-splash-image-directory
   (expand-file-name "~/.config/doom/misc/splash-images/" doom-private-dir)
@@ -293,6 +293,7 @@ otherwise the colour will be face foreground.")
   :config
   (org-roam-db-autosync-enable)
   :custom
+  (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (sk/org-roam-node-insert-immediate))
 
 
@@ -328,8 +329,8 @@ otherwise the colour will be face foreground.")
       "* Definition\n%?\n* Example\n1. "
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+tags: word\n")
       :unnarrowed t)
-     ("p" "project" plain "* Goals\n%?\n* Tasks\n** TODO Add initial tasks\n\n* Dates\n"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+tags: project")
+     ("p" "project" plain "* Goals\n%?\n* Tasks\n** TODO Add initial tasks\n\n*Index\n\n* Dates\n"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: project")
       :unnarrowed t))))
 
 (use-package! org-auto-tangle
@@ -357,6 +358,8 @@ otherwise the colour will be face foreground.")
        :desc "Evaluate elisp expression" "e" #'eval-expression
        :desc "Evaluate last sexpression" "l" #'eval-last-sexp
        :desc "Evaluate elisp in region"  "r" #'eval-region))
+
+(setq inferior-lisp-program "sbcl")
 
 (use-package! lsp-mode
   :init

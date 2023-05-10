@@ -30,9 +30,9 @@ Bind "kj" to go into normal mode from evil-insert mode.
 (key-chord-mode 1)
 #+END_SRC
 * Doom Theme
-Setting the theme to doom-monokai-machine.
+Setting the theme to doom-sourcer
 #+BEGIN_SRC elisp
-(setq doom-theme 'doom-monokai-machine)
+(setq doom-theme 'doom-sourcerer)
 #+END_SRC
 * Custom Start Screen
 ** Image
@@ -72,7 +72,6 @@ Each plist is of the form (\"$placeholder\" :doom-color 'key :face 'face).
 If the current theme is a doom theme :doom-color will be used,
 otherwise the colour will be face foreground.")
 #+END_SRC
-**
 * Fonts
 Settings related to fonts within Doom Emacs.
 #+BEGIN_SRC elisp
@@ -370,6 +369,7 @@ Capture notes as never before with capture templates.
   :config
   (org-roam-db-autosync-enable)
   :custom
+  (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (sk/org-roam-node-insert-immediate))
 
 
@@ -408,8 +408,8 @@ Capture templates for roam.
       "* Definition\n%?\n* Example\n1. "
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+tags: word\n")
       :unnarrowed t)
-     ("p" "project" plain "* Goals\n%?\n* Tasks\n** TODO Add initial tasks\n\n* Dates\n"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+tags: project")
+     ("p" "project" plain "* Goals\n%?\n* Tasks\n** TODO Add initial tasks\n\n*Index\n\n* Dates\n"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: project")
       :unnarrowed t))))
 #+END_SRC
 
@@ -451,6 +451,11 @@ Repl everywhere.
        :desc "Evaluate last sexpression" "l" #'eval-last-sexp
        :desc "Evaluate elisp in region"  "r" #'eval-region))
 #+END_SRC
+** Common Lisp
+#+BEGIN_SRC elisp
+(setq inferior-lisp-program "sbcl")
+#+END_SRC
+
 * M-x vscode
 #+BEGIN_SRC elisp
 (use-package! lsp-mode
