@@ -95,6 +95,7 @@ alias undoomify="source ~/shell-scripts/undoomify.sh"
 alias doomify="source ~/shell-scripts/doomify.sh"
 alias emacs-change-state="source ~/shell-scripts/emacs-change-state.sh"
 alias rn=ranger
+alias mirrors="rate-mirrors --allow-root --protocol https arch | sudo tee /etc/pacman.d/mirrorlist"
 
 # User configuration
 
