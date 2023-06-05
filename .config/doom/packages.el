@@ -47,7 +47,8 @@
 (package! org-auto-tangle)
 (package! peep-dired)
 (package! dired-open)
-
+(package! sage-shell-mode)
+(package! ob-sagemath)
 
 ;; Doom's packages are pinned to a specific commit and updated from release to
 ;; release. The `unpin!' macro allows you to unpin single packages...

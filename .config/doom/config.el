@@ -279,25 +279,25 @@ in hooks that call functions with arguments."
             fancy-splash--last-size appropriate-size)
       (+doom-dashboard-reload))))
 
-    (defun doom-dashboard-draw-ascii-emacs-banner-fn ()
-    (let* ((banner
-    '("    _____   _     _   _        _                  "
-      "   |  _  | | |   | |(_)      (_)                  "
-      "  | |  || | |__ | | _ __   __ _   ___   _ __      "
-      " | |  || | '_ \\| || |\\ \\ / /| | / _ \\ | '_ \\ "
-      " | \\_// | |_)|| || | \\ V / | || (_) || | | |    "
-      " \\___/ |_.__/|_||_|  \\_/  |_| \\___/ |_| |_|    "))
-    (longest-line (apply #'max (mapcar #'length banner))))
+(defun doom-dashboard-draw-ascii-emacs-banner-fn ()
+  (let* ((banner
+          '("    _____   _     _   _        _                  "
+            "   |  _  | | |   | |(_)      (_)                  "
+            "  | |  || | |__ | | _ __   __ _   ___   _ __      "
+            " | |  || | '_ \\| || |\\ \\ / /| | / _ \\ | '_ \\ "
+            " | \\_// | |_)|| || | \\ V / | || (_) || | | |    "
+            " \\___/ |_.__/|_||_|  \\_/  |_| \\___/ |_| |_|    "))
+         (longest-line (apply #'max (mapcar #'length banner))))
     (put-text-property
-    (point)
-    (dolist (line banner (point))
-    (insert (+doom-dashboard--center
-    +doom-dashboard--width
-    (concat
-    line (make-string (max 0 (- longest-line (length line)))
-                    32)))
-    "\n"))
-    'face 'doom-dashboard-banner)))
+     (point)
+     (dolist (line banner (point))
+       (insert (+doom-dashboard--center
+                +doom-dashboard--width
+                (concat
+                 line (make-string (max 0 (- longest-line (length line)))
+                                   32)))
+               "\n"))
+     'face 'doom-dashboard-banner)))
 
 (unless (display-graphic-p) ; for some reason this messes up the graphical splash screen atm
   (setq +doom-dashboard-ascii-banner-fn #'doom-dashboard-draw-ascii-emacs-banner-fn))
@@ -653,6 +653,26 @@ in hooks that call functions with arguments."
        :desc "Evaluate elisp in region"  "r" #'eval-region))
 
 (setq inferior-lisp-program "sbcl")
+
+(use-package! sage-shell-mode
+  :init
+  (setq sage-shell:use-prompt-toolkit nil)
+  (setq sage-shell:use-simple-prompt t)
+  (setq sage-shell:set-ipython-version-on-startup nil)
+  (setq sage-shell:check-ipython-version-on-startup nil)
+  (sage-shell:define-alias)
+  :hook ((sage-shell-mode-hook sage-shell:sage-mode-hook) . eldoc-mode))
+
+(setq org-babel-default-header-args:sage '((:session . t)
+                                           (:results . "output")))
+
+(with-eval-after-load "org"
+  (define-key org-mode-map (kbd "C-c c") 'ob-sagemath-execute-async))
+
+(setq org-confirm-babel-evaluate nil)
+(setq org-export-babel-evaluate nil)
+(setq org-startup-with-inline-images t)
+(add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
 
 (use-package! lsp-mode
   :init
