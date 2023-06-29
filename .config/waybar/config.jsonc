@@ -1,118 +1,101 @@
 {
-	"layer": "top",
-    "position": "top",
-    "mod": "dock",
-    "exclusive": true,
-    "passtrough": false,
-    "gtk-layer-shell": true,
-    "height": 0,
-	"modules-left": ["custom/launcher","clock","wlr/workspaces"],
-	"modules-center": ["hyprland/window"],
-	"modules-right": ["network","battery","pulseaudio","pulseaudio#microphone","backlight","custom/updates","custom/power"],
-	
-    "pulseaudio": {
-        "format": "{icon} {volume}%",
-        "tooltip": false,
-        "format-muted": "󰖁 Muted",
-        "on-scroll-up": "pulsemixer --change-volume +5",
-        "on-scroll-down": "pulsemixer --change-volume -5",
-        "scroll-step": 5,
-        "format-icons": {
-            "headphone": "󰋋",
-            "headset": "󰋎",
-            "phone": "",
-            "car": "",
-            "default": ["󰕿", "󰖀", "󰕾"]
-        },
-    "on-click": "pulsemixer --toggle-mute",
-    },
-    "hyprland/window": {
-        "format": "{}"
-    },
-    "wlr/workspaces": {
-        "on-scroll-up": "hyprctl dispatch workspace e+1",
-        "on-scroll-down": "hyprctl dispatch workspace e-1",
-        "all-outputs": true,
-        "on-click": "activate",
-        "format": "{icon}",
-        "format-icons": {
-            "1": " main ",
-            "2": " 󱝆 Surf ",
-            "3": " ( prog) ",
-            "4": " 󰿈 Math ",
-            "5": " 󰼭 Write ",
-            "default": ""
-          }
-    },
-    "pulseaudio#microphone": {
-        "format": "{format_source}",
-        "tooltip": false,
-        "format-source": " {volume}%",
-        "format-source-muted": " Muted",
-        "on-click": "pulsemixer --list-sources | grep \"Microphone\" | tail -n 1 | grep -o \"source-[0-9]*\" | xargs -I dot pulsemixer --id dot --toggle-mute",
-        "on-scroll-up": "pulsemixer --list-sources | grep \"Microphone\" | tail -n 1 | grep -o \"source-[0-9]*\" | xargs -I dot pulsemixer --id dot --change-volume +5",
-        "on-scroll-down": "pulsemixer --list-sources | grep \"Microphone\" | tail -n 1 | grep -o \"source-[0-9]*\" | xargs -I dot pulsemixer --id dot --change-volume -5",
-        "scroll-step": 5
-    },
-    "network": {
-        "format-wifi": " {essid}",
-        "format-ethernet": "󰈀 {essid}",
-        "format-linked": "{ifname} (No IP) 󱚼",
-        "format-disconnected": "󰖪 Disconnected",
-        "tooltip-format-wifi": "Signal Strenght: {signalStrength}% | Down Speed: {bandwidthDownBits}, Up Speed: {bandwidthUpBits}",
-        "on-click": ". $HOME/.dev/wifi4wofi/wifi4wofi"
-    },
-	"backlight": {
-		"tooltip": false,
-		"format": "{icon} {}%",
-        "format-icons": ["󱩏","󱩑","󱩓","󱩕","󰛨"],
-		"interval":1,
-        "on-scroll-up": "light -A 5",
-		"on-scroll-down": "light -U 5"
-	},
-    "battery": {
-        "states": {
-            "good": 95,
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{capacity}% {icon}",
-        "format-charging": "{capacity}% 󰂄",
-        "format-plugged": "{capacity}% ",
-        "format-alt": "{time} {icon}",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
-        "format-icons": ["", "", "", "", ""]
-    },
-	"tray":{
-		"icon-size":18,
-		"spacing": 10
-	},
-    "clock": {
-        "format": "{:󰥔 %R   %d/%m}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
-    },
-    /* "custom/weather" : {
-	#     	"tooltip" : true,
-	# 	"format" : "{}",
-	# 	"restart-interval": 300,
-	# 	"exec" : "~/.config/waybar/scripts/waybar-wttr.py",
-	# 	"return-type" : "json"
-    # }, */
-    "custom/launcher":{
-        "format": " ",
-        "on-click": "wofi --show drun",
-        "on-click-right": "killall wofi"
-    },
-    "custom/power":{
-        "format": " ",
-        "on-click": "wlogout",
-    },
-    "custom/updates": {
-        "exec": "(paru -Qua) | wc -l",
-        "exec-if": "[[ $(paru -Qua | wc -l) != 0 ]]",
-        "interval": 100,
-        "on-click": "alacritty -e paru -Syu && notify-send 'The system has been updated' ",
-        "format": "󰇚 {}"
-    },
+"layer": "top",
+"position": "left", 
+"height": 712,
+"margin-left": 2,
+"margin-right" : 2,
+"modules-center": ["custom/launcher","clock", "network" , "pulseaudio","pulseaudio#microphone","backlight", "battery","custom/power"],
+"wlr/workspaces": {
+"on-scroll-up": "hyprctl dispatch workspace e+1",
+"on-scroll-down": "hyprctl dispatch workspace e-1",
+"all-outputs": true,
+"on-click": "activate",
+"format": "{icon}",
+"format-icons": {
+"1": "󰟐 ",
+"2": "󱝆 ",
+"3": "( )",
+"4": " 󰿈 ",
+"5": "[ 󰼭 ]",
+"default": " "
+}
+},
+"pulseaudio": {
+"format": "{icon} {volume}%",
+"tooltip": false,
+"format-muted": "󰖁 Muted",
+"on-scroll-up": "pulsemixer --change-volume +5",
+"on-scroll-down": "pulsemixer --change-volume -5",
+"scroll-step": 5,
+"format-icons": {
+"headphone": "󰋋",
+"headset": "󰋎",
+"phone": "",
+"car": "",
+"default": ["󰕿", "󰖀", "󰕾"]
+},
+"on-click": "pulsemixer --toggle-mute",
+},
+"hyprland/window": {
+"format": "{}"
+},
+"pulseaudio#microphone": {
+"format": "{format_source}",
+"tooltip": false,
+"format-source": " {volume}%",
+"format-source-muted": " Muted",
+"on-click": "pulsemixer --list-sources | grep \"Microphone\" | tail -n 1 | grep -o \"source-[0-9]*\" | xargs -I dot pulsemixer --id dot --toggle-mute",
+"on-scroll-up": "pulsemixer --list-sources | grep \"Microphone\" | tail -n 1 | grep -o \"source-[0-9]*\" | xargs -I dot pulsemixer --id dot --change-volume +5",
+"on-scroll-down": "pulsemixer --list-sources | grep \"Microphone\" | tail -n 1 | grep -o \"source-[0-9]*\" | xargs -I dot pulsemixer --id dot --change-volume -5",
+"scroll-step": 5
+},
+"network": {
+"format-wifi": " \n{essid}",
+"format-ethernet": "󰈀 {essid}",
+"format-linked": "{ifname} (No IP) 󱚼",
+"format-disconnected": "󰖪 Disconnected",
+"tooltip-format-wifi": "Signal Strenght: {signalStrength}% | Down Speed: {bandwidthDownBits}, Up Speed: {bandwidthUpBits}",
+"on-click":". $HOME/.dev/wifi4wofi/wifi4wofi"
+},
+"backlight": {
+"tooltip": false,
+"format": "{icon} {}%",
+"format-icons": ["󱩏","󱩑","󱩓","󱩕","󰛨"],
+"interval":1,
+"on-scroll-up": "light -A 5",
+"on-scroll-down": "light -U 5"
+},
+"battery": {
+"states": {
+"good": 95,
+"warning": 30,
+"critical": 15
+},
+"format": " {icon}\n{capacity}%",
+"format-charging": "{capacity}% 󰂄",
+"format-plugged": "{capacity}% ",
+"format-alt": "{time} {icon}",
+// "format-good": "", // An empty format will hide the module
+// "format-full": "",
+"format-icons": ["", "", "", "", ""]
+},
+"tray":{
+"icon-size":18,
+"spacing": 10
+},
+"clock": {
+"format": "{:   󰥔\n %R\n\n   \n %d/%m }",
+"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+},
+"custom/launcher":{
+"format": "  ",
+"on-click": "wofi --show drun",
+"on-click-right": "killall wofi",
+"tooltip" : false,
+},
+"custom/power":{
+"format": "  ",
+"on-click": "wlogout",
+"tooltip" : false,
+},
 }
