@@ -28,23 +28,17 @@
 
 ;; Battery Widgets ;;
 (defwidget bat []
-	   (eventbox :onhover "${eww} update bat=true"
-		     :onhoverlost "${eww} update bat=false"
 	   (box	:orientation "v"	
 		:space-evenly "false"
 		:spacing 2
-	        (revealer :transition "slideup"
-			  :reveal battery-cappacity
-			  :duration "550ms"
-			  (scale :value battery-cappacity
-				 :tooltip "Battery: ${battery-cappacity}%"))
-		(label	:class "bat"		
+		:text battery
+		:tooltip "Battery: ${battery-cappacity}%"
+		(label	:class "battery"		
 			:halign "center"		
 			:text battery
-			))))
+			)))
 (defpoll battery			:interval "1s"	". ~/.config/eww/bar/scripts/battery icon")
 (defpoll battery-cappacity	:interval "1s"	". ~/.config/eww/bar/scripts/battery percent")
-(defvar bat false)
 
 ;; Wifi Widgets ;;
 (defwidget wifi []
@@ -61,18 +55,17 @@
 	   (eventbox :onhover "${eww} update bright=true"   
   		     :onhoverlost "${eww} update bright=false"
   		     (box    :orientation "v"  
-			     :space-evenly "false"  
+			     :space-evenly "false"
 			     :spacing 0
   			     (revealer :transition "slideup" 
 			  	       :reveal bright   
 				       :duration "550ms"
-  				       (scale :class "bribar" 
-			  		      :value current-brightness 
+  				       (scale :class "bribar"
+					      :value current-brightness
 					      :tooltip "Brightness: ${current-brightness}%" 
 					      :onchange "light -S {}%" 
 					      :orientation "v" 
-					      :flipped true 
-					      :max 101 
+					      :flipped true
 					      :min 0))
   			     (label :class "brightness-icon" 
 			  	    :text "󱩕"))))
@@ -98,16 +91,16 @@
 						   :min 0 
 						   :onchange "amixer -D pulse sset Master {}%" ))
 			       (button   :onclick "scripts/popup audio"   :class "volume-icon" ""))))
-(defpoll current-volume :interval "1s" "amixer -D pulse sget Master | grep 'Left:' | awk -F'[][]' '{ print $2 }' | tr -d '%'")
+(defpoll current-volume :interval "1s" "pulsemixer --get-volume | grep -oE '[0-9]+$'")
 (defvar volum false)
 
 ;; Control Panel Widgets ;;	
 (defwidget control []
 	   (box :orientation "v" 
-		:space-evenly false  
+		:space-evenly true
 		:class "control"
-		(bat)
 		(wifi)
+		(bat)
 		(bright)
 		(volum)))
 
@@ -116,9 +109,9 @@
 	   (box	:orientation "v" 
 		:class "time" 
 		:valign "end"
-		(button	:onclick "scripts/popup calendar"	
+		(button	:onclick ". ./scripts/popup calendar"	
 			:class "time-hour" hour)
-		(button	:onclick "scripts/popup calendar"	
+		(button	:onclick ". ./scripts/popup calendar"	
 			:class "time-min"  min)))
 (defpoll hour	:interval "1s"	"date '+%H'")
 (defpoll min	:interval "1s"	"date '+%M'")
