@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/.local/bin:$HOME/.dev/flutter/bin:/usr/lib/jvm/java-19-openjdk/bin:$HOME/Android/cmdline-tools/latest/bin:$HOME/Android/Sdk/platform-tools:$HOME/.config/doom/.emacs.d/bin:$HOME/.dev/node/bin:/usr/local/texlive/2022/bin/x86_64-linux:$HOME/.pub-cache/bin:/usr/local/bin:$HOME/.cargo/bin:$HOME/.config/emacs/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/.dev/flutter/bin:/usr/lib/jvm/java-17-openjdk/bin:$HOME/Android/cmdline-tools/latest/bin:$HOME/Android/Sdk/platform-tools:$HOME/.config/doom/.emacs.d/bin:$HOME/.dev/node/bin:/usr/local/texlive/2022/bin/x86_64-linux:$HOME/.pub-cache/bin:/usr/local/bin:$HOME/.cargo/bin:$HOME/.config/emacs/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -77,8 +77,9 @@ export VISUAL="vim"
 
 export VI_MODE_SET_CURSOR=true
 export XDG_SCREENSHOTS_DIR="/home/parzival/Screenshots"
-export JAVA_HOME="/usr/lib/jvm/java-20-openjdk"
-export LD_LIBRARY_PATH="/usr/lib/jvm/java-20-openjdk/lib"
+export JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
+export ANDROID_HOME="/home/parzival/Android/Sdk"
+export LD_LIBRARY_PATH="/usr/lib/jvm/java-17-openjdk/lib:/home/parzival/.dev/mpc/build"
 export CHROME_EXECUTABLE='vivaldi-stable'
 source $ZSH/oh-my-zsh.sh
 
