@@ -70,7 +70,7 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git sudo aliases colored-man-pages ripgrep rust systemd vi-mode zoxide fd zsh-autosuggestions)
+plugins=(git sudo aliases colored-man-pages ripgrep rust systemd zoxide fd zsh-autosuggestions)
 
 export EDITOR="vim"
 export VISUAL="vim"
@@ -133,3 +133,4 @@ fi
 (cat ~/.cache/wal/sequences &)
 clear
 fastfetch
+[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
