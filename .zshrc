@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/.local/bin:$HOME/.dev/flutter/bin:/usr/lib/jvm/java-17-openjdk/bin:$HOME/Android/cmdline-tools/latest/bin:$HOME/Android/Sdk/platform-tools:$HOME/.config/doom/.emacs.d/bin:$HOME/.dev/node/bin:/usr/local/texlive/2022/bin/x86_64-linux:$HOME/.pub-cache/bin:/usr/local/bin:$HOME/.cargo/bin:$HOME/.config/emacs/bin:$PATH
 
@@ -8,7 +15,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="alanpeabody"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -82,6 +89,7 @@ export ANDROID_HOME="/home/parzival/Android/Sdk"
 export LD_LIBRARY_PATH="/usr/lib/jvm/java-17-openjdk/lib:/home/parzival/.dev/mpc/build"
 export CHROME_EXECUTABLE='vivaldi-stable'
 source $ZSH/oh-my-zsh.sh
+export SAGE_ROOT="/home/parzival/Work/gsoc/sage/sage-10.0"
 
 alias cd=z
 alias ls=exa
@@ -134,3 +142,6 @@ fi
 clear
 fastfetch
 [ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
