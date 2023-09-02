@@ -302,11 +302,17 @@
 
 (use-package perspective
   :straight t
-  :bind ("C-x k" . persp-kill-buffer*)
+  :bind
+  (("C-x k" . persp-kill-buffer*)
+   ("C-x C-b". persp-list-buffers))
+  :hook
+  (kill-emacs-hook . #'persp-state-save)
   :custom
   (persp-mode-prefix-key (kbd "C-c M-p"))
+  (persp-state-default-file "~/.config/emacs/persp")
   :init
-  (persp-mode))
+  (persp-mode)
+  (persp-state-load persp-state-default-file))
 
 (use-package org
   :straight t
@@ -586,4 +592,29 @@
   (eldoc-mode +1)
   (tide-hl-identifier-mode +1)
   (company-mode +1))
+
+
+;; (use-package typescript-mode
+;;   :straight t
+;;   :hook (typescript-mode . (lambda ()
+;; 			     (setq lsp-enabled-clients '(deno-ls))
+;; 			     (lsp-deferred))))
+
+;; (add-hook 'js-mode-hook (lambda ()
+;; 			  (setq lsp-disabled-clients '())
+;; 			  (lsp-deferred)))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("7a424478cb77a96af2c0f50cfb4e2a88647b3ccca225f8c650ed45b7f50d9525" "89d9dc6f4e9a024737fb8840259c5dd0a140fd440f5ed17b596be43a05d62e67" default)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 
