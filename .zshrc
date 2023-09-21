@@ -1,12 +1,8 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-export PATH=$HOME/.local/bin:$HOME/.dev/flutter/bin:/usr/lib/jvm/java-17-openjdk/bin:$HOME/Android/cmdline-tools/latest/bin:$HOME/Android/Sdk/platform-tools:$HOME/.config/doom/.emacs.d/bin:$HOME/.dev/node/bin:/usr/local/texlive/2022/bin/x86_64-linux:$HOME/.pub-cache/bin:/usr/local/bin:$HOME/.cargo/bin:$HOME/.config/emacs/bin:$PATH
+export PATH=$HOME/.local/bin:/usr/lib/jvm/java-20-openjdk/bin:/usr/local/bin:$HOME/.config/emacs/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -50,98 +46,27 @@ zstyle ':omz:update' frequency 15
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="true"
 
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
 plugins=(git sudo aliases colored-man-pages ripgrep rust systemd zoxide fd zsh-autosuggestions)
 
 export EDITOR="vim"
 export VISUAL="vim"
 
 export VI_MODE_SET_CURSOR=true
-export XDG_SCREENSHOTS_DIR="/home/parzival/Screenshots"
-export JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
-export ANDROID_HOME="/home/parzival/Android/Sdk"
-export LD_LIBRARY_PATH="/usr/lib/jvm/java-17-openjdk/lib:/home/parzival/.dev/mpc/build"
-export CHROME_EXECUTABLE='vivaldi-stable'
+export XDG_SCREENSHOTS_DIR="/home/parzival/Pictures/Screenshots"
+export JAVA_HOME="/usr/lib/jvm/java-20-openjdk"
+export LD_LIBRARY_PATH="/usr/lib/jvm/java-20-openjdk/lib"
+export CHROME_EXECUTABLE="vivaldi-stable"
 source $ZSH/oh-my-zsh.sh
-export SAGE_ROOT="/home/parzival/Work/gsoc/sage/sage-10.0"
 
 alias cd=z
 alias ls=exa
 alias ll="exa -al"
 alias reload="source ~/.zshrc"
-alias edit=~/.local/bin/open.sh
 alias vi=vim
-alias sudo=doas
 alias tree="exa --tree"
-alias config="git --git-dir=/home/parzival/dotfiles --work-tree=/home/parzival/."
-alias undoomify="source ~/shell-scripts/undoomify.sh"
-alias doomify="source ~/shell-scripts/doomify.sh"
-alias emacs-change-state="source ~/shell-scripts/emacs-change-state.sh"
-alias rn=ranger
+alias config="git --git-dir=/home/parzival/.cfg --work-tree=/home/parzival/."
 alias mirrors="rate-mirrors --allow-root --protocol https arch | sudo tee /etc/pacman.d/mirrorlist"
 
-# User configuration
-
-if [ -d "/home/parzival/.config/emacs.doom" ]
-then
-    export DOOM="false"
-else
-    export DOOM="true"
-fi
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-(cat ~/.cache/wal/sequences &)
 clear
-fastfetch
-[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
