@@ -13,7 +13,7 @@ timestr=%I:%M %p
 datestr=%A, %d %B
 
 # Text
-font=Harriet Display
+font=Terminess Nerd Font
 font-size=150
 text-color=402826
 text-ver-color=00000000

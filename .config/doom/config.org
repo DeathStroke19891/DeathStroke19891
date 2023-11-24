@@ -415,9 +415,9 @@ in hooks that call functions with arguments."
 * Fonts
 Settings related to fonts within Doom Emacs.
 #+BEGIN_SRC elisp
-(setq doom-font (font-spec :family "SpaceMono Nerd Font Mono" :size 13)
-      doom-variable-pitch-font (font-spec :family "SpaceMono Nerd Font" :size 13)
-      doom-big-font (font-spec :family "SpaceMono Nerd Font Mono" :size 24))
+(setq doom-font (font-spec :family "Monaspace Krypton" :size 15)
+      doom-variable-pitch-font (font-spec :family "Monaspace Krypton" :size 15)
+      doom-big-font (font-spec :family "Monaspace Krypton" :size 24))
 (after! doom-themes
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t))
@@ -700,7 +700,7 @@ Capture notes as never before with capture templates.
 
 (use-package! org-roam
   :custom
-  (org-roam-directory "~/Documents/orgRoam")
+  (org-roam-directory "~/Documents/emacs/orgRoam")
   (setq org-roam-completion-everywhere t)
   :bind ( :map org-mode-map (
                              "C-M-i" . completion-at-point ;; Trigger Completion at point
