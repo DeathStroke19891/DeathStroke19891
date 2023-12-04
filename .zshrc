@@ -6,6 +6,7 @@ export PATH=$HOME/.local/bin:/usr/lib/jvm/java-20-openjdk/bin:/usr/local/bin:$HO
 
 export ZSH="$HOME/.oh-my-zsh"
 
+
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 HYPHEN_INSENSITIVE="true"
@@ -40,6 +41,8 @@ alias mirrors="rate-mirrors --allow-root --protocol https arch | sudo tee /etc/p
 alias vim="nvim"
 alias fixpacman="sudo rm /var/lib/pacman/db.lck"
 #alias paru="paru --fm nvim"
+
+cat $HOME/.cache/wal/sequences
 
 #clear
 
