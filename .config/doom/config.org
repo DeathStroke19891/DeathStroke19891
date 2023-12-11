@@ -891,6 +891,6 @@ They type so I don't have to
 (after! yasnippet
   (use-package! yasnippet
     :config
-    (setq yas-snippet-dirs '("~/Documents/snippets"))
+    (setq yas-snippet-dirs '("~/Documents/emacs/snippets"))
     (yas-global-mode t)))
 #+END_SRC

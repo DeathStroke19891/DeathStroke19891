@@ -729,5 +729,5 @@ in hooks that call functions with arguments."
 (after! yasnippet
   (use-package! yasnippet
     :config
-    (setq yas-snippet-dirs '("~/Documents/snippets"))
+    (setq yas-snippet-dirs '("~/Documents/emacs/snippets"))
     (yas-global-mode t)))
