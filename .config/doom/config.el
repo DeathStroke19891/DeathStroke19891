@@ -15,7 +15,7 @@
   "Directory in which to look for splash image templates.")
 
 (defvar fancy-splash-image-template
-  (expand-file-name "blackhole-template.svg" fancy-splash-image-directory)
+  (expand-file-name "emacs-e-template.svg" fancy-splash-image-directory)
   "Default template svg used for the splash image.
    Colours are substituted as per `fancy-splash-template-colours'.")
 
