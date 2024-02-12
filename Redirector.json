@@ -1,0 +1,23 @@
+{
+    "createdBy": "Redirector v3.5.3",
+    "createdAt": "2024-02-12T11:15:45.788Z",
+    "redirects": [
+        {
+            "description": "Example redirect, try going to http://example.com/anywordhere",
+            "exampleUrl": "https://www.youtube.com/comedy",
+            "exampleResult": "https://vids.sridharkedlaya.xyz/https://www.youtube.com/comedy",
+            "error": null,
+            "includePattern": "https://www.youtube.com/*",
+            "excludePattern": "",
+            "patternDesc": "Youtube stuff",
+            "redirectUrl": "https://vids.sridharkedlaya.xyz/https://www.youtube.com/$1",
+            "patternType": "W",
+            "processMatches": "noProcessing",
+            "disabled": false,
+            "grouped": false,
+            "appliesTo": [
+                "main_frame"
+            ]
+        }
+    ]
+}
