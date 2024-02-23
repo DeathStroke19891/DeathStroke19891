@@ -31,7 +31,7 @@ export QT_QPA_PLATFORMTHEME="qt5ct"
 source $ZSH/oh-my-zsh.sh
 
 alias cd=z
-alias ls=exa
+alias ls="exa -al"
 alias ll="exa -al"
 alias reload="source ~/.zshrc"
 alias vi=vim
