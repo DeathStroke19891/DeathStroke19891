@@ -1,0 +1,127 @@
+(defpoll time :interval "1s"
+         :initial "00:00:00"
+         `echo "$(date +%H)\\n$(date +%M)\\n$(date +%S)"`)
+
+(defpoll battery :interval "3m"
+         :initial "{\"percentage\": \"null\", \"status\": \"null\"}"
+         `./scripts/battery.sh`)
+
+(defpoll wifi :interval "15s"
+         :initial "Not Connected"
+         `./scripts/wifi.sh`)
+
+(defpoll current-brightness :interval "1s"
+         :initial 100
+         `light`)
+
+(defpoll dummy :interval "1s"
+         :initial "ok"
+         "python ./scripts/workspaces.py")
+
+(defvar work_zhong_when "")
+
+(defvar bright false)
+
+(defwindow bar
+           :monitor 0
+           :geometry (geometry :x "10px"
+                               :y "0%"
+                               :width "35px"
+                               :height "97.5%"
+                               :anchor "center left")
+           :stacking "fg"
+           :exclusive true
+           (container))
+
+(defwidget container []
+           (box :class "container"
+                :orientation "v"
+                (top-bar)
+                (center-bar)
+                (bottom-bar)))
+
+(defwidget top-bar []
+           (box :class "top-bar"
+                :orientation "v"
+                :valign "start"
+                (launcher)
+                (workspaces :workspace work_zhong_when)))
+
+(defwidget launcher []
+           (button :class "launcher"
+                   :onclick "notify-send 'Launcher' 'Clicked Launcher'"
+                   (image :path "./assets/hermit.png"
+                          :image-width 38
+                          :image-height 38)))
+
+(defwidget center-bar []
+           (box :class "center-bar"
+                :orientation "v"
+                :valign "center"
+                (button :class "clock"
+                        :onclick "notify-send 'Time' 'Clicked Time'"
+                        time)))
+
+(defwidget bottom-bar []
+           (box :class "bottom-bar"
+                :orientation "v"
+                :valign "end"
+                :space-evenly "false"
+                :spacing 4
+                (battery)
+                (wifi)
+                (bright)
+                (sound)
+                (power)))
+
+(defwidget battery []
+           (image :class "battery"
+                  :path "./assets/the_one.png"
+                  :image-width 45
+                  :image-height 45
+                  :tooltip "Battery: ${battery.percentage}%; Status: ${battery.status}"))
+
+(defwidget wifi []
+           (button :class "wifi"
+                   :onclick "alacritty --title \"Connect to the Internet\" -e nmtui & disown"
+                   (image :path "./assets/wireless-router.png"
+                          :image-width 38
+                          :image-height 38
+                          :tooltip "${wifi}")))
+
+(defwidget bright []
+           (button :class "bright"
+                   :onclick "notify-send 'Brightness' 'Clicked brightness'"
+                   (image :path "./assets/light-bulb.png"
+                          :image-width 45
+                          :image-height 45)))
+
+(defwidget sound []
+           (button :class "sound"
+                   :onclick "notify-send 'Sound' 'Clicked sound'"
+                   (image :path "./assets/sound.png"
+                          :image-width 40
+                          :image-height 40)))
+
+
+(defwidget power []
+           (button :class "power"
+                   :onclick "notify-send 'Power' 'Clicked power'"
+                   (image :path "./assets/power_menu.png"
+                          :image-width 45
+                          :image-height 45)))
+
+;; (defwidget bright []
+;;            (eventbox :onhover "eww update bright=true; echo \"Hover Obtained\""
+;;                      :onhoverlost "eww update bright=false; echo \"Hover Lost\""
+;;                      (box    :orientation "v"
+;;                              (revealer :transition "slide"
+;;                                        :reveal bright
+;;                                        :duration "550ms")
+;;                              (image :class "brightness-icon"
+;;                                     :path "./assets/light-bulb.png"
+;;                                     :image-width 45
+;;                                     :image-height 45))))
+
+(defwidget workspaces [workspace]
+  (literal :content workspace))
