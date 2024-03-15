@@ -50,7 +50,9 @@
 (package! sage-shell-mode)
 (package! ob-sagemath)
 (package! yuck-mode)
-
+(package! copilot
+  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el" "dist")))
+(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 ;; Doom's packages are pinned to a specific commit and updated from release to
 ;; release. The `unpin!' macro allows you to unpin single packages...
                                         ;(unpin! pinned-package)
