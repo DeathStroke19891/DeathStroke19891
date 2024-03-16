@@ -14,11 +14,9 @@
          :initial 100
          `light`)
 
-(defpoll dummy :interval "1s"
-         :initial "ok"
-         "python ./scripts/workspaces.py")
+(deflisten workspaces :initial "[]" "bash ./scripts/get-workspaces")
+(deflisten current_workspace :initial "一" "bash ./scripts/get-active-workspace")
 
-(defvar work_zhong_when "")
 
 (defvar bright false)
 
@@ -44,8 +42,9 @@
            (box :class "top-bar"
                 :orientation "v"
                 :valign "start"
+                :space-evenly "false"
                 (launcher)
-                (workspaces :workspace work_zhong_when)))
+                (workspaces)))
 
 (defwidget launcher []
            (button :class "launcher"
@@ -58,6 +57,7 @@
            (box :class "center-bar"
                 :orientation "v"
                 :valign "center"
+                :space-evenly "false"
                 (button :class "clock"
                         :onclick "notify-send 'Time' 'Clicked Time'"
                         time)))
@@ -123,5 +123,11 @@
 ;;                                     :image-width 45
 ;;                                     :image-height 45))))
 
-(defwidget workspaces [workspace]
-  (literal :content workspace))
+(defwidget workspaces []
+           (eventbox :onscroll "./scripts/change-active-workspace.py {} ${current_workspace}" :class "workspaces-widget"
+                     (box :orientation "v"
+                          (label :text "${workspaces}${current_workspace}" :visible false)
+                          (for workspace in workspaces
+                               (eventbox :onclick ". ./scripts/click-active-workspace ${workspace.id}"
+                                         (box :class "workspace ${workspace.id == current_workspace ? "workspace_current" : ""} ${current_workspace} ${workspace.id} ${workspace.windows > 0 ? "workspace_not_empty" : ""}"
+                                              (label :text "${workspace.id}")))))))
